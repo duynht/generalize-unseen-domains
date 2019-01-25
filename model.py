@@ -7,9 +7,11 @@ class Model(object):
     """
     def __init__(self, mode='train'):
 
-	self.no_classes = 10
+	self.no_classes = 2 
 	self.img_size = 32
-	self.no_channels = 3
+        self.img_row = 500
+        self.img_col = 90
+	self.no_channels = 1
 
     def encoder(self, images, reuse=False, return_feat=False):
 
@@ -32,12 +34,12 @@ class Model(object):
     def build_model(self):
 
 	#images placeholder
-	self.z = tf.placeholder(tf.float32, [None, self.img_size, self.img_size, self.no_channels], 'z')
+	self.z = tf.placeholder(tf.float32, [None, self.img_row, self.img_col, self.no_channels], 'z')
 	#labels placeholder
 	self.labels = tf.placeholder(tf.int64, [None], 'labels')
 	
 	#images-for-gradient-ascent variable
-	self.z_hat = tf.get_variable('z_hat', [self.batch_size, self.img_size, self.img_size, self.no_channels])
+	self.z_hat = tf.get_variable('z_hat', [self.batch_size, self.img_row, self.img_col, self.no_channels])
 	#op to assign the value fed to self.z to the variable
 	self.z_hat_assign_op = self.z_hat.assign(self.z)
 

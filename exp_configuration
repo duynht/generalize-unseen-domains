@@ -2,14 +2,14 @@
 
 source_dataset = mnist
 target_dataset = svhn
-no_images = 10000
+no_images = 1000
 
 [MAIN_SETTINGS]
 
 # training iterations
 train_iters = 10001
 # number of samples in each batch
-batch_size = 32
+batch_size = 3
 # learning rate min
 learning_rate_min = 0.0001
 # learning rate max
@@ -25,8 +25,11 @@ k = 6
 
 [MODEL_SETTINGS]
 # number of classes
-no_classes = 10
+no_classes = 2
 # number of color channels
-no_channels = 3
+no_channels = 1
 # size of the images
 img_size = 32
+row = 500
+height = 90
+
