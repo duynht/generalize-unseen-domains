@@ -2,9 +2,9 @@ import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import numpy as np
 import numpy.random as npr
-from ConfigParser import *
+from configparser import *
 import os
-import cPickle
+import pickle
 import scipy.io
 import sys
 import glob
@@ -32,17 +32,17 @@ for i in ['bathroom','bathroom2','bedrooms','bedrooms2','corridor1','corridor2_1
     x_path = 'falldefi'+str(i)+'_images.pkl'
     y_path = 'falldefi'+str(i)+'_labels.pkl'
     pickle_in = open(x_path,"rb")
-    xx = cPickle.load(pickle_in)
+    xx = pickle.load(pickle_in)
     pickle_in.close()
     pickle_in = open(y_path,"rb")
-    yy = cPickle.load(pickle_in)
+    yy = pickle.load(pickle_in)
     pickle_in.close()
     xx,yy = shuffle(xx,yy,random_state=0)
     pickle_out = open('./falldefi_shuffled/'+x_path,'wb')
-    cPickle.dump(xx,pickle_out)
+    pickle.dump(xx,pickle_out)
     pickle_out.close()
     pickle_out = open('./falldefi_shuffled/'+y_path,'wb')
-    cPickle.dump(yy,pickle_out)
+    pickle.dump(yy,pickle_out)
     pickle_out.close()
-    print(str(i),yy)
-    print(str(i)+' ',xx.shape,yy.shape)
+    print((str(i),yy))
+    print((str(i)+' ',xx.shape,yy.shape))

@@ -3,7 +3,7 @@ from model import Model
 from trainOps import TrainOps
 import glob
 import os
-import cPickle
+import pickle
 
 import numpy.random as npr
 import numpy as np
@@ -27,11 +27,11 @@ def main(_):
     trainOps.load_exp_config()
 
     if FLAGS.mode=='train':
-	print 'Training'
+	print('Training')
 	trainOps.train()       
 
     elif FLAGS.mode=='test':
-	print 'Testing'
+	print('Testing')
 	trainOps.test('svhn')       
 
 if __name__ == '__main__':

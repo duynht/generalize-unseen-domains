@@ -1,6 +1,6 @@
 import numpy as np
 import os
-import cPickle
+import pickle
 from PIL import Image
 from tensorflow.examples.tutorials.mnist import input_data
 
@@ -34,10 +34,10 @@ def download_and_process_mnist():
             'y': mnist.test.labels}
         
     with open('./data/mnist/train.pkl','w') as f:
-	cPickle.dump(train,f,cPickle.HIGHEST_PROTOCOL)
+	pickle.dump(train,f,pickle.HIGHEST_PROTOCOL)
     
     with open('./data/mnist/test.pkl','w') as f:
-	cPickle.dump(test,f,cPickle.HIGHEST_PROTOCOL)
+	pickle.dump(test,f,pickle.HIGHEST_PROTOCOL)
 	
 if __name__ == "__main__":
     download_and_process_mnist()

@@ -2,9 +2,9 @@ import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import numpy as np
 import numpy.random as npr
-from ConfigParser import *
+from configparser import *
 import os
-import cPickle
+import pickle
 import scipy.io
 import sys
 import glob
@@ -76,7 +76,7 @@ class TrainOps(object):
 	image_file = 'train.pkl' if split=='train' else 'test.pkl'
 	image_dir = os.path.join(self.data_dir, 'mnist', image_file)
 	with open(image_dir, 'rb') as f:
-	    mnist = cPickle.load(f)
+	    mnist = pickle.load(f)
 	images = mnist['X'] 
 	labels = mnist['y']
 
@@ -98,7 +98,7 @@ class TrainOps(object):
     def train(self): 
 
 
-	print 'Loading data.'
+	print('Loading data.')
         
        # x_dic, y_dic = csv_import()
 
@@ -120,19 +120,19 @@ class TrainOps(object):
             x_path = './falldefi_shuffled/falldefi'+str(i)+'_images.pkl'
             y_path = './falldefi_shuffled/falldefi'+str(i)+'_labels.pkl'
             pickle_in = open(x_path,"rb")
-            xx = cPickle.load(pickle_in)
+            xx = pickle.load(pickle_in)
             xx = xx[int(len(xx)/3):]
             x.append(xx)
             pickle_in.close()
             pickle_in = open(y_path,"rb")
-            yy = cPickle.load(pickle_in)
+            yy = pickle.load(pickle_in)
             yy = yy[int(len(yy)/3):]
             pickle_in.close()
             y.append(yy)
             gc.collect()
             #print(str(i),yy)
-            print(str(i)+' finish',xx.shape,yy.shape)
-        print(np.array(x).shape, np.array(y).shape)
+            print((str(i)+' finish',xx.shape,yy.shape))
+        print((np.array(x).shape, np.array(y).shape))
         
         
         #target_test
@@ -145,8 +145,8 @@ class TrainOps(object):
       #  pickle_out = open('target_labels.pkl','wb')
       #  cPickle.dump(target_test_labels,pickle_out)
       #  pickle_out.close()
-        source_images = cPickle.load(open('target_images.pkl','rb'))
-        source_labels = cPickle.load(open('target_labels.pkl','rb'))
+        source_images = pickle.load(open('target_images.pkl','rb'))
+        source_labels = pickle.load(open('target_labels.pkl','rb'))
 
         #source
         target_test_images = np.r_[x[dic['bathroom']],x[dic['bathroom2']],x[dic['bedrooms']],x[dic['bedrooms2']],x[dic['corridor1']],x[dic['corridor2_1']],x[dic['corridor2_2']], x[dic['kitchen']],x[dic['kitchen2']]]
@@ -191,9 +191,9 @@ class TrainOps(object):
         target_test_labels = np.squeeze(target_test_labels)
 
 
-        print(source_train_images.shape,source_train_labels.shape)
-        print(source_test_images.shape,source_test_labels.shape)
-        print(target_test_images.shape,target_test_labels.shape)
+        print((source_train_images.shape,source_train_labels.shape))
+        print((source_test_images.shape,source_test_labels.shape))
+        print((target_test_images.shape,target_test_labels.shape))
 
       #  x_bed, x_fall, x_pickup, x_run, x_standup, x_walk, \
       #  y_bed, y_fall, y_pickup, y_run, y_standup, y_walk = csv_import()
@@ -260,7 +260,7 @@ class TrainOps(object):
 	#target_test_images, target_test_labels = self.load_test_data(target=self.target_dataset)
 	
         
-        print 'Loaded'
+        print('Loaded')
 
         gamma_ensemble = [0.000001]	
         for gamma_id,gamma in enumerate(gamma_ensemble):
@@ -273,11 +273,11 @@ class TrainOps(object):
                 os.makedirs(self.model_save_path)
             self.model.gamma = gamma          
             # build a graph
-            print ('Building model'+str(gamma_id))
+            print(('Building model'+str(gamma_id)))
             self.model.mode='train_encoder'
             self.model.build_model()
-            print 'Built'
-            print ('Training model #'+str(gamma_id))
+            print('Built')
+            print(('Training model #'+str(gamma_id)))
             with tf.Session(config=self.config) as sess:
                 tf.global_variables_initializer().run()
                 saver = tf.train.Saver()
@@ -286,13 +286,13 @@ class TrainOps(object):
 
                 counter_k = 0
                                 
-                print 'Training'
+                print('Training')
                 self.no_images = source_train_images.shape[0]
-                print('self.no_images = ', self.no_images)
+                print(('self.no_images = ', self.no_images))
                 for t in range(self.train_iters):
                     if ((t+1) % self.T_min == 0) and (counter_k < self.k): #if T_min iterations are passed
-                        print 'Generating adversarial images [iter %d]'%(counter_k)
-                        for start, end in zip(range(0, self.no_images, self.batch_size), range(self.batch_size, self.no_images, self.batch_size)): 
+                        print('Generating adversarial images [iter %d]'%(counter_k))
+                        for start, end in zip(list(range(0, self.no_images, self.batch_size)), list(range(self.batch_size, self.no_images, self.batch_size))): 
                             feed_dict = {self.model.z: source_train_images[start:end], self.model.labels: source_train_labels[start:end]} 
 
                             #assigning the current batch of images to the variable to learn z_hat
@@ -308,7 +308,7 @@ class TrainOps(object):
                             source_train_labels = np.hstack((source_train_labels, source_train_labels[start:end]))
                         
                         #shuffling the dataset
-                        rnd_indices = range(len(source_train_images))
+                        rnd_indices = list(range(len(source_train_images)))
                         npr.shuffle(rnd_indices)
                         source_train_images = source_train_images[rnd_indices]
                         source_train_labels = source_train_labels[rnd_indices]
@@ -342,9 +342,9 @@ class TrainOps(object):
                                                           self.model.labels: target_test_labels[test_rand_idxs]})
                                                                                                           
                         summary_writer.add_summary(summary, t)
-                        print ('Step: [%d/%d] train_min_loss: [%.4f] train_acc: [%.4f] test_min_loss: [%.4f] test_acc: [%.4f]'%(t+1, self.train_iters, train_min_loss, train_acc, test_min_loss, test_acc))
+                        print(('Step: [%d/%d] train_min_loss: [%.4f] train_acc: [%.4f] test_min_loss: [%.4f] test_acc: [%.4f]'%(t+1, self.train_iters, train_min_loss, train_acc, test_min_loss, test_acc)))
 
-                print 'Saving'
+                print('Saving')
                 saver.save(sess, os.path.join(self.model_save_path, 'encoder'))
                 tf.global_variables_initializer().run()
 
@@ -372,19 +372,19 @@ class TrainOps(object):
             x_path = './falldefi_shuffled/falldefi'+str(i)+'_images.pkl'
             y_path = './falldefi_shuffled/falldefi'+str(i)+'_labels.pkl'
             pickle_in = open(x_path,"rb")
-            xx = cPickle.load(pickle_in)
+            xx = pickle.load(pickle_in)
             xx = xx[int(len(xx)/3):]
             test_images = np.concatenate((test_images,xx),axis=0)
             pickle_in.close()
             pickle_in = open(y_path,"rb")
-            yy = cPickle.load(pickle_in)
+            yy = pickle.load(pickle_in)
             yy = yy[int(len(yy)/3):]
             pickle_in.close()
             test_labels = np.concatenate((test_labels,yy),axis=0)
             #gc.collect()
             #print(str(i),yy)
-            print(str(i)+' finish')
-        print(test_images.shape,test_labels.shape)
+            print((str(i)+' finish'))
+        print((test_images.shape,test_labels.shape))
         
         #expand dims
         test_images = np.expand_dims(test_images,axis=-1)
@@ -392,13 +392,13 @@ class TrainOps(object):
         #squeeze dims
         test_labels = np.squeeze(test_labels)
         
-        print('Test shape = ',test_images.shape)
+        print(('Test shape = ',test_images.shape))
 
         # build a graph
-	print 'Building model'
+	print('Building model')
 	self.model.mode='train_encoder'
 	self.model.build_model()
-	print 'Built'
+	print('Built')
 
       #  gamma_ensemble = [1,0.1,0.01,0.001,0.0001,0.00001,0.000001]	
       #  for gamma_id,gamma in enumerate(gamma_ensemble):
@@ -422,7 +422,7 @@ class TrainOps(object):
 	    restorer = tf.train.Saver(variables_to_restore)
             gamma_ensemble = [1,0.1,0.01,0.001,0.0001,0.00001,0.000001]	
             for gamma_id,gamma in enumerate(gamma_ensemble):
-                print('Model #'+str(gamma_id)) 
+                print(('Model #'+str(gamma_id))) 
                 self.model_save_path = os.path.join(self.exp_dir,'model_'+str(gamma_id))
                 restorer.restore(sess, os.path.join(self.model_save_path,'encoder'))
 
@@ -430,7 +430,7 @@ class TrainOps(object):
                 target_accuracy = 0
                 target_loss = 0
 
-                print 'Calculating accuracy'
+                print('Calculating accuracy')
 
                 for test_images_batch, test_labels_batch in zip(np.array_split(test_images, N), np.array_split(test_labels, N)):
                     feed_dict = {self.model.z: test_images_batch, self.model.labels: test_labels_batch} 
@@ -438,10 +438,10 @@ class TrainOps(object):
                     target_accuracy += target_accuracy_tmp/float(N)
                     target_loss += target_loss_tmp/float(N)
 
-                print ('Target accuracy: [%.4f] target loss: [%.4f]'%(target_accuracy, target_loss))
+                print(('Target accuracy: [%.4f] target loss: [%.4f]'%(target_accuracy, target_loss)))
 	
 if __name__=='__main__':
 
-    print '...'
+    print('...')
 
 

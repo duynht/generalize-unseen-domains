@@ -4,7 +4,7 @@ import numpy as np
 
 import tensorflow as tf
 
-import cPickle
+import pickle
 
 #from sklearn.manifold import TSNE
 
@@ -25,31 +25,31 @@ def one_hot(x,n):
 	
 def unpickle(file):
     fo = open(file, 'rb')
-    dict = cPickle.load(fo)
+    dict = pickle.load(fo)
     fo.close()
     return dict
 	
 def computeTSNE(fileName='./for_tsne.pkl'):
 	
 	with open(fileName,'r') as f:
-		fx, src_fx, src_labels, trg_fx, adda_trg_fx, trg_labels = cPickle.load(f)
+		fx, src_fx, src_labels, trg_fx, adda_trg_fx, trg_labels = pickle.load(f)
 		
 	src_labels = np.argmax(src_labels,1)
 	trg_labels = np.argmax(trg_labels,1)
 
-	print 'Computing T-SNE.'
+	print('Computing T-SNE.')
 
 	model = TSNE(n_components=2, random_state=0)
 
-	print '0'
+	print('0')
 	TSNE_hA_0 = model.fit_transform(np.vstack((src_fx,fx)))
 	#~ print '1'
 	#~ TSNE_hA_1 = model.fit_transform(fx)
 	#~ print '2'
 	#~ TSNE_hA_2 = model.fit_transform(src_fx)
-	print '3'
+	print('3')
 	TSNE_hA_3 = model.fit_transform(np.vstack((src_fx,fx,trg_fx)))
-	print '4'
+	print('4')
 	TSNE_hA_4 = model.fit_transform(np.vstack((src_fx,fx,adda_trg_fx)))
 	
 	plt.figure(0)
