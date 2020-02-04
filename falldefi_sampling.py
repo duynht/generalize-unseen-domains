@@ -56,6 +56,7 @@ def data_import(path1, label):
                 while k <= (len(tmp1) + 1 - 2 * window_size):
                         x = np.dstack(np.array(tmp1[k:k+window_size, 0:60]).T)
                         x2 = np.concatenate((x2, x),axis=0)
+                        print(x2)
                         k += slide_size
 
                 xx = np.concatenate((xx,x2),axis=0)
