@@ -134,79 +134,79 @@ def csv_shuffle():
 
 def data_split():
     dic = {'bathroom':0,'bathroom2':1,'bedrooms':2,'bedrooms2':3,'corridor1':4,'corridor2_1':5,'corridor2_2':6,'kitchen':7,'kitchen2':8,'lab2':9}
-        x = []
-        y = []
-        for i in ['bathroom','bathroom2','bedrooms','bedrooms2','corridor1','corridor2_1','corridor2_2','kitchen','kitchen2']:
-            x_path = './falldefi_shuffled/falldefi_'+str(i)+'_images.pkl'
-            y_path = './falldefi_shuffled/falldefi_'+str(i)+'_labels.pkl'
-            pickle_in = open(x_path,"rb")
-            xx = pickle.load(pickle_in)
-            # xx = xx[int(len(xx)/3):]
-            x.append(xx)
-            pickle_in.close()
-            pickle_in = open(y_path,"rb")
-            yy = pickle.load(pickle_in)
-            # yy = yy[int(len(yy)/3):]
-            pickle_in.close()
-            y.append(yy)
-            gc.collect()
-            #print(str(i),yy)
-            print((str(i)+' finish',xx.shape,yy.shape))
-        print((np.array(x).shape, np.array(y).shape))
-        
-        
-        # target_test all target is used for test
-        target_images = np.array(x[dic['lab2']])
-        target_labels = np.array(y[dic['lab2']])
+    x = []
+    y = []
+    for i in ['bathroom','bathroom2','bedrooms','bedrooms2','corridor1','corridor2_1','corridor2_2','kitchen','kitchen2']:
+        x_path = './falldefi_shuffled/falldefi_'+str(i)+'_images.pkl'
+        y_path = './falldefi_shuffled/falldefi_'+str(i)+'_labels.pkl'
+        pickle_in = open(x_path,"rb")
+        xx = pickle.load(pickle_in)
+        # xx = xx[int(len(xx)/3):]
+        x.append(xx)
+        pickle_in.close()
+        pickle_in = open(y_path,"rb")
+        yy = pickle.load(pickle_in)
+        # yy = yy[int(len(yy)/3):]
+        pickle_in.close()
+        y.append(yy)
+        gc.collect()
+        #print(str(i),yy)
+        print((str(i)+' finish',xx.shape,yy.shape))
+    print((np.array(x).shape, np.array(y).shape))
+    
+    
+    # target_test all target is used for test
+    target_images = np.array(x[dic['lab2']])
+    target_labels = np.array(y[dic['lab2']])
 
-        target_dic = {'X': np.expand_dims(target_images, axis=-1), 'y': np.squeeze(target_labels)}
-        pickle.dump(target_dic, open('fdftarget_.pkl'))
+    target_dic = {'X': np.expand_dims(target_images, axis=-1), 'y': np.squeeze(target_labels)}
+    pickle.dump(target_dic, open('fdftarget_.pkl'))
 
-        # source_images = pickle.load(open('target_images.pkl','rb'))
-        # source_labels = pickle.load(open('target_labels.pkl','rb'))
-        
-        target_train_images, target_test_images, target_train_labels, target_test_labels = train_test_split(target_images, target_labels, test_size = 0.33, random_state=0)
+    # source_images = pickle.load(open('target_images.pkl','rb'))
+    # source_labels = pickle.load(open('target_labels.pkl','rb'))
+    
+    target_train_images, target_test_images, target_train_labels, target_test_labels = train_test_split(target_images, target_labels, test_size = 0.33, random_state=0)
 
-        #source
-        source_images = np.r_[x[dic['bathroom']],x[dic['bathroom2']],x[dic['bedrooms']],x[dic['bedrooms2']],x[dic['corridor1']],x[dic['corridor2_1']],x[dic['corridor2_2']], x[dic['kitchen']],x[dic['kitchen2']]]
+    #source
+    source_images = np.r_[x[dic['bathroom']],x[dic['bathroom2']],x[dic['bedrooms']],x[dic['bedrooms2']],x[dic['corridor1']],x[dic['corridor2_1']],x[dic['corridor2_2']], x[dic['kitchen']],x[dic['kitchen2']]]
 
-        source_labels = np.r_[y[dic['bathroom']],y[dic['bathroom2']],y[dic['bedrooms']],y[dic['bedrooms2']],y[dic['corridor1']],y[dic['corridor2_1']],y[dic['corridor2_2']], y[dic['kitchen']],y[dic['kitchen2']]]
+    source_labels = np.r_[y[dic['bathroom']],y[dic['bathroom2']],y[dic['bedrooms']],y[dic['bedrooms2']],y[dic['corridor1']],y[dic['corridor2_1']],y[dic['corridor2_2']], y[dic['kitchen']],y[dic['kitchen2']]]
 
-        # source_dic = {'X': np.expand_dims(sourcet_images, axis=-1), 'y': np.squeeze(source_labels)}
-        # pickle.dump(target_dic, open('fdfsource.pkl'))
+    # source_dic = {'X': np.expand_dims(sourcet_images, axis=-1), 'y': np.squeeze(source_labels)}
+    # pickle.dump(target_dic, open('fdfsource.pkl'))
 
-        source_train_images, source_test_images, source_train_labels, source_test_labels = train_test_split(source_images, source_labels, test_size = 0.33, random_state=0)     
-        
-        #expand dims
-        source_train_images = np.expand_dims(source_train_images,axis=-1)
-        source_test_images = np.expand_dims(source_test_images,axis=-1)
-        target_train_images = np.expand_dims(target_train_images,axis=-1)
-        target_test_images = np.expand_dims(target_test_images,axis=-1)
-        
-        #squeeze dims
-        source_train_labels = np.squeeze(source_train_labels)
-        source_test_labels = np.squeeze(source_test_labels)
-        target_train_labels = np.squeeze(target_train_labels)
-        target_test_labels = np.squeeze(target_test_labels)
+    source_train_images, source_test_images, source_train_labels, source_test_labels = train_test_split(source_images, source_labels, test_size = 0.33, random_state=0)     
+    
+    #expand dims
+    source_train_images = np.expand_dims(source_train_images,axis=-1)
+    source_test_images = np.expand_dims(source_test_images,axis=-1)
+    target_train_images = np.expand_dims(target_train_images,axis=-1)
+    target_test_images = np.expand_dims(target_test_images,axis=-1)
+    
+    #squeeze dims
+    source_train_labels = np.squeeze(source_train_labels)
+    source_test_labels = np.squeeze(source_test_labels)
+    target_train_labels = np.squeeze(target_train_labels)
+    target_test_labels = np.squeeze(target_test_labels)
 
 
-        print((source_train_images.shape,source_train_labels.shape))
-        print((source_test_images.shape,source_test_labels.shape))
-        print((target_train_images.shape,target_train_labels.shape))
-        print((target_test_images.shape,target_test_labels.shape))
+    print((source_train_images.shape,source_train_labels.shape))
+    print((source_test_images.shape,source_test_labels.shape))
+    print((target_train_images.shape,target_train_labels.shape))
+    print((target_test_images.shape,target_test_labels.shape))
 
-        source_train_dic = {'X': source_train_images, 'y': source_train_labels}
-        source_test_dic = {'X': source_test_images, 'y': source_test_labels}
-        test_train_dic = {'X': target_train_images, 'y': target_train_labels}
-        test_test_dic = {'X': target_test_images, 'y': target_test_labels}
+    source_train_dic = {'X': source_train_images, 'y': source_train_labels}
+    source_test_dic = {'X': source_test_images, 'y': source_test_labels}
+    test_train_dic = {'X': target_train_images, 'y': target_train_labels}
+    test_test_dic = {'X': target_test_images, 'y': target_test_labels}
 
-        # source_df = pd.DataFrame(source_dic)
-        # test_df = pd.DataFrame(test_dic)
+    # source_df = pd.DataFrame(source_dic)
+    # test_df = pd.DataFrame(test_dic)
 
-        pickle.dump(source_train_dic, open('fdfsource_train.pkl','wb'))
-        pickle.dump(source_test_dic, open('fdfsource_test.pkl','wb'))
-        pickle.dump(target_train_dic, open('fdftarget_train.pkl','wb'))
-        pickle.dump(target_test_dic, open('fdftarget_test.pkl','wb'))
+    pickle.dump(source_train_dic, open('fdfsource_train.pkl','wb'))
+    pickle.dump(source_test_dic, open('fdfsource_test.pkl','wb'))
+    pickle.dump(target_train_dic, open('fdftarget_train.pkl','wb'))
+    pickle.dump(target_test_dic, open('fdftarget_test.pkl','wb'))
 
 def main():
     print('mat2csv...')
