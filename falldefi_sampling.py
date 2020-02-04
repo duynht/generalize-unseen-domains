@@ -79,7 +79,7 @@ def mat2csv():
             os.makedirs("input_files/"+str(folder)+'/')
 
         for i, label in enumerate (['fall','nonfall']):
-            filepath = 'interp/'+str(folder)+'/*.mat'
+            filepath = '../FallDeFi/interp/'+str(folder)+'/*.mat'
             
             outputfilename1 = 'input_files/'+str(folder)+'/xx_'+str(window_size)+'_'+str(threshold)+'_'+str(label)+".csv"
             outputfilename2 = 'input_files/'+str(folder)+'/yy_'+str(window_size)+'_'+str(threshold)+'_'+str(label)+".csv"       
