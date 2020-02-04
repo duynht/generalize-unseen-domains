@@ -210,11 +210,11 @@ def data_split():
 
 def main():
     print('mat2csv...')
-    mat2csv()
+    self.mat2csv()
     print('csv_shuffle...')
-    csv_shuffle()
+    self.csv_shuffle()
     print('data_split...')
-    data_split()
+    self.data_split()
     print('done!')
 
 if __name__ == "__main__":
