@@ -15,6 +15,9 @@ import utils
 
 from cross_vali_input_data import csv_import, DataSet
 from sklearn.utils import shuffle
+ 
+ x_dic, y_dic = csv_import()
+
 # for i in ['bathroom','bathroom2','bedrooms','bedrooms2','corridor1','corridor2_1','corridor2_2','kitchen','kitchen2','lab2']:
 #     shuffle(x_dic[str(i)],y_dic[str(i)],random_state = 0)
 #     x_path = 'falldefi'+str(i)+'_images.pkl'

@@ -14,7 +14,7 @@ flags.DEFINE_string('exp_dir', 'exp_dir', "Experiment directory")
 flags.DEFINE_string('mode', 'mode', "Experiment directory")
 FLAGS = flags.FLAGS
 
-def main(_):
+def main():
 
     GPU_ID = FLAGS.gpu
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152 on stackoverflow
