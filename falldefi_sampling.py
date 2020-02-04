@@ -44,8 +44,8 @@ def data_import(path1, label):
         for f in input_mat_files:
                 print("input_file_name=",f)
                 data = loadmat(f)
-                data = {k:v for k,v in data.items() if k[0] != '_'}
-                data = [data[k] for k in data]
+                # data = {k:v for k,v in data.items() if k[0] != '_'}
+                # data = [data[k] for k in data]
                 data = np.array(data)
                 data = np.squeeze(data, axis = 0)
                 tmp1 = data
