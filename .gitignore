@@ -5,4 +5,7 @@ logs/
 *.pkl
 *.txt
 *.zip
+*.7z
 *.bak
+input_files/*
+falldefi_dataset/*
